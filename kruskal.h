@@ -8,6 +8,9 @@ struct Edge {
     int u, v, weight;
 };
 
+
+bool compareWeight(Edge a, Edge b);
+
 vector<vector<int>> kruskalMST(const vector<Edge>& edges, int V, vector<Edge>& arcs);
 
 #endif

@@ -76,12 +76,16 @@ int main(int argc, char *argv[]) {
         cout << "(" << arc.u << ", " << arc.v << ")" << endl;
     }
 
+
+    // 2. TSP
+    christofidesTSP(mstGraph, AdjMatrixDistance);
+
+
     // 3. Ford-Fullkerson
     int max_flow = ford_fullkerson(AdjMatrixDistance, 0, n - 1);
 
     cout << "Flujo máximo en el grafo:" << max_flow << endl;
 
-    christofidesTSP(mstGraph);
 
     return 0;
 }
