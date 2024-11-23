@@ -4,6 +4,7 @@
 #include <string>
 #include "kruskal.h"
 #include "ford_fullkerson.h"
+#include "christofides.h"
 
 using namespace std;
 
@@ -68,7 +69,7 @@ int main(int argc, char *argv[]) {
     readFile(filename, edges, AdjMatrixDistance, n);
 
     // 1. Kruskal
-    kruskalMST(edges, n, arcs);
+    vector<vector<int>> mstGraph = kruskalMST(edges, n, arcs);
 
     cout << "Arcos para conectar todo el grafo:" << endl;
     for (Edge arc : arcs) {
@@ -79,6 +80,8 @@ int main(int argc, char *argv[]) {
     int max_flow = ford_fullkerson(AdjMatrixDistance, 0, n - 1);
 
     cout << "Flujo máximo en el grafo:" << max_flow << endl;
+
+    christofidesTSP(mstGraph);
 
     return 0;
 }

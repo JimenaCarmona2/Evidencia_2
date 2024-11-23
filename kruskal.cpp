@@ -38,7 +38,7 @@ bool compareWeight(Edge a, Edge b) {
     return a.weight < b.weight;
 }
 
-void kruskalMST(const vector<Edge>& edges, int V, vector<Edge>& arcs) {
+vector<vector<int>> kruskalMST(const vector<Edge>& edges, int V, vector<Edge>& arcs) {
     vector<Edge> res;  // Resultado MST
     int weightMST = 0;
 
@@ -66,6 +66,7 @@ void kruskalMST(const vector<Edge>& edges, int V, vector<Edge>& arcs) {
             mergeUnion(subsets, u, v);
 
             mstMatrix[edge.u][edge.v] = edge.weight;
+            mstMatrix[edge.v][edge.u] = edge.weight;
 
             arcs.push_back(edge);
         }
@@ -88,4 +89,5 @@ void kruskalMST(const vector<Edge>& edges, int V, vector<Edge>& arcs) {
     }
 
     delete[] subsets;
+    return mstMatrix;
 }

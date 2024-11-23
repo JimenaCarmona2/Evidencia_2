@@ -8,6 +8,6 @@ struct Edge {
     int u, v, weight;
 };
 
-void kruskalMST(const vector<Edge>& edges, int V, vector<Edge>& arcs);
+vector<vector<int>> kruskalMST(const vector<Edge>& edges, int V, vector<Edge>& arcs);
 
 #endif
