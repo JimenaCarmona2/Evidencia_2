@@ -58,7 +58,7 @@ void readFile(const string& filename, vector<Edge>& edges, vector<vector<int>>& 
 }
 
 int main(int argc, char *argv[]) {
-    string filename = "input.txt";
+    string filename = argv[1];
 
     vector<Edge> edges;
     vector<vector<int>> AdjMatrixDistance;
@@ -66,11 +66,19 @@ int main(int argc, char *argv[]) {
     vector<Edge> arcs;
 
     readFile(filename, edges, AdjMatrixDistance, n);
+
+    // 1. Kruskal
     kruskalMST(edges, n, arcs);
 
+    cout << "Arcos para conectar todo el grafo:" << endl;
     for (Edge arc : arcs) {
         cout << "(" << arc.u << ", " << arc.v << ")" << endl;
     }
+
+    // 3. Ford-Fullkerson
+    int max_flow = ford_fullkerson(AdjMatrixDistance, 0, n - 1);
+
+    cout << "Flujo máximo en el grafo:" << max_flow << endl;
 
     return 0;
 }

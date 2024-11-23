@@ -14,7 +14,7 @@ bool BFS(vector<vector<int>>& residualGraphAdjMatrix, int s, int t, vector<int>&
     }
 
     q.push(s);
-    visited[s] = -1;
+    parents[s] = -1;
 
     while (!q.empty()) {
         int u = q.front();
@@ -49,34 +49,32 @@ int ford_fullkerson(vector<vector<int>>& adjacencyMatrix, int s, int t) {
         }
     }
 
-    vector<int> parents;
+    vector<int> parents(n, -1);
 
-    int currentNode, parentNode;
+    int v, u;
 
     while (BFS(residualGraphAdjMatrix, s, t, parents) == true) {
         int path_flow = INT_MAX;
 
-        for (currentNode = t; currentNode != s; currentNode = parents[currentNode]) {
-            parentNode = parents[currentNode];
-            path_flow = min(path_flow, residualGraphAdjMatrix[currentNode][parentNode]);
+        for (v = t;  v != s;  v = parents[v]) {
+            u = parents[v];
+            path_flow = min(path_flow, residualGraphAdjMatrix[u][v]);
         }
 
-        for (currentNode = t; currentNode != s; currentNode = parents[currentNode]) {
-            parentNode = parents[currentNode];
+        for (v = t;  v != s;  v = parents[v]) {
+             u = parents[v];
 
-            residualGraphAdjMatrix[currentNode][parentNode] -= path_flow;
-            residualGraphAdjMatrix[parentNode][currentNode] += path_flow;
+            residualGraphAdjMatrix[u][v] -= path_flow;
+            residualGraphAdjMatrix[v][u] += path_flow;
         }
 
         max_flow += path_flow;
     }
+
+    return max_flow;
 }
 
 /*
 Bibliografía: 
 https://www.geeksforgeeks.org/ford-fulkerson-algorithm-for-maximum-flow-problem/
 */
-
-int main() {
-    return 0;
-}
