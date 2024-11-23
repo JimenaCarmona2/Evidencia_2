@@ -1,0 +1,76 @@
+# Compilados de C++
+*.out
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+
+# Archivos de depuración
+*.dSYM/
+*.exe.stackdump
+
+# Directorios de construcción
+/build/
+/bin/
+/Debug/
+/Release/
+/x64/
+/x86/
+
+# Archivos generados por IDEs y editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos de configuración de VSCode
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+
+# Archivos temporales de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de caché y otros archivos del compilador
+*.log
+*.gcda
+*.gcno
+*.gcov
+*.gch
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Python cache files (in case you use Python for Jupyter)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.ipynb
+
+# Librerías
+*.cmake
+CMakeFiles/
+CMakeCache.txt
+Makefile
+CMakeScripts/
+CTestTestfile.cmake
+cmake_install.cmake
+install_manifest.txt
+qrc_*.cpp
+moc_*.cpp
+ui_*.h
+
+# Archivos temporales y de respaldo
+*.tmp
+*.bak
+*.old
+*.orig
+*.rej
+*.sublime-project
+*.sublime-workspace
