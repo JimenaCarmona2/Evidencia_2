@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include "kruskal.h"
+#include "ford_fullkerson.h"
 
 using namespace std;
 
