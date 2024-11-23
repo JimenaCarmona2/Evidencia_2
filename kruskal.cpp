@@ -2,6 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
@@ -39,7 +40,62 @@ void mergeUnion(Subset subsets[], int u, int v) {
     }
 }
 
-void readFile(const string& filename, vector<Edge>& edges, vector<vector<int>>& AdjMatrixDistance) {
+bool compareWeight(Edge a, Edge b) {
+    return a.weight < b.weight;
+}
+
+void kruskalMST(const vector<Edge>& edges, int V) {
+    vector<Edge> res;  // Resultado MST
+    int weightMST = 0;
+
+    // Ordenar las aristas por peso
+    vector<Edge> sortedEdges = edges; // No modifica el original
+    sort(sortedEdges.begin(), sortedEdges.end(), compareWeight);
+
+    Subset* subsets = new Subset[V];
+
+    for (int i = 0; i < V; ++i) {
+        subsets[i].parent = i; // Son padres de sí mismos al iniciar
+        subsets[i].rank = 0;
+    }
+
+    // Matriz de adyacencia para el MST
+    vector<vector<int>> mstMatrix(V, vector<int>(V, 0));
+    for (const Edge& edge : sortedEdges) {
+        int u = find(subsets, edge.u);
+        int v = find(subsets, edge.v);
+
+        // Si u y v están en diferentes conjuntos, se unen
+        if (u != v) {
+            res.push_back(edge);
+            weightMST += edge.weight;
+            mergeUnion(subsets, u, v);
+
+            mstMatrix[edge.u][edge.v] = edge.weight;
+            mstMatrix[edge.v][edge.u] = edge.weight;
+        }
+    }
+
+    cout << "\nMatriz de adyacencia del MST:\n";
+    ofstream outfile("MST.txt");
+    if (outfile.is_open()) {
+        for (const auto& row : mstMatrix) {
+            for (int weight : row) {
+                cout << weight << " ";
+                outfile << weight << " ";
+            }
+            cout << endl;
+            outfile << endl;
+        }
+        outfile.close();
+    } else {
+        cerr << "Error" << endl;
+    }
+
+    delete[] subsets;
+}
+
+void readFile(const string& filename, vector<Edge>& edges, vector<vector<int>>& AdjMatrixDistance, int& n) {
     ifstream file(filename);
     if (!file) {
         cerr << "Error al abrir el archivo" << endl;
@@ -48,7 +104,6 @@ void readFile(const string& filename, vector<Edge>& edges, vector<vector<int>>& 
 
     vector<vector<int>> auxAdjMatrixDistance;
     string line;
-    int n;
 
     // Leer número de vértices
     if (getline(file, line)) {
@@ -91,12 +146,14 @@ void readFile(const string& filename, vector<Edge>& edges, vector<vector<int>>& 
 }
 
 int main(int argc, char *argv[]) {
-    string filename = argv[1];
+    string filename = "input.txt";
 
     vector<Edge> edges;
     vector<vector<int>> AdjMatrixDistance;
+    int n;
 
-    readFile(filename, edges, AdjMatrixDistance);
+    readFile(filename, edges, AdjMatrixDistance, n);
+    kruskalMST(edges, n);
 
     return 0;
 }
