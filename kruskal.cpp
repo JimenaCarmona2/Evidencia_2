@@ -72,22 +72,6 @@ vector<vector<int>> kruskalMST(const vector<Edge>& edges, int V, vector<Edge>& a
         }
     }
 
-    cout << "\nMatriz de adyacencia del MST:\n";
-    ofstream outfile("MST.txt");
-    if (outfile.is_open()) {
-        for (const auto& row : mstMatrix) {
-            for (int weight : row) {
-                cout << weight << " ";
-                outfile << weight << " ";
-            }
-            cout << endl;
-            outfile << endl;
-        }
-        outfile.close();
-    } else {
-        cerr << "Error" << endl;
-    }
-
     delete[] subsets;
     return mstMatrix;
 }

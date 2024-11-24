@@ -2,13 +2,14 @@
 #include <vector>
 #include <algorithm>
 #include <stack>
+#include <set>
 #include "kruskal.h"
 
 using namespace std;
 
 // se utiliza para encontrar las aristas 'minimum weight perfect matching' y así conectar los nodos
 // que tienen un número impar de aristas
-vector<Edge> minimumWeightPerfectMatching(int n, vector<Edge>& edges) {
+vector<Edge> minimumWeightPerfectMatching(int n, vector<Edge>& edges, set<pair<int,int>> mstEdgesSet) {
     // vector de aristas que conectan los nodos con número de aristas impares 
     vector<Edge> matching;
 
@@ -24,7 +25,7 @@ vector<Edge> minimumWeightPerfectMatching(int n, vector<Edge>& edges) {
         int v = edge.v;
 
         // si los nodos no han sido agregados a la lista se agregan
-        if (!inMatching[u] && !inMatching[v]) {
+        if (!inMatching[u] && !inMatching[v] && mstEdgesSet.find({u, v}) == mstEdgesSet.end()) {
             matching.push_back(edge);
             inMatching[u] = inMatching[v] = true;
         }
@@ -104,7 +105,7 @@ vector<int> deleteRepeatedNodes(const vector<int>& eulerianCycle) {
     return finalPath;
 }
 
-// **SOLAMENTE FUNCIONA PARA UN GRAFO COMPLETO**
+// **SOLAMENTE FUNCIONA PARA UN GRAFO COMPLETO NO DIRIGIDO**
 // aproximación de solución para el problema TSP, tiene como entrada una matriz de adyacencia del MST de un grafo completo
 // y el grafo original completo
 void christofidesTSP(vector<vector<int>>& mstGraph, vector<vector<int>>& originalGraph) {
@@ -116,10 +117,13 @@ void christofidesTSP(vector<vector<int>>& mstGraph, vector<vector<int>>& origina
 
     // Aristas de mstGraph
     vector<Edge> mstEdges;
+    set<pair<int, int>> mstEdgesSet;
     for (int u = 0; u < n; u++) {
         for (int v = u; v < n; v++) {
             if (mstGraph[u][v] > 0) {
                 mstEdges.push_back({u, v, mstGraph[u][v]});
+                mstEdgesSet.insert({u, v});
+                mstEdgesSet.insert({v, u});
             }
         }
     }
@@ -136,7 +140,6 @@ void christofidesTSP(vector<vector<int>>& mstGraph, vector<vector<int>>& origina
 
         if (nodeCount % 2 != 0) {
             oddNumberEdgesNodes.push_back(u);
-            cout << u << endl;
         }
     }
 
@@ -158,15 +161,10 @@ void christofidesTSP(vector<vector<int>>& mstGraph, vector<vector<int>>& origina
     }
 
     // algoritmo de blossom para encontrar las aristas de minimo costo que conectan a los nodos restantes
-    vector<Edge> matching = minimumWeightPerfectMatching(n, minWeightEdges);
-
-    cout << "Aristas que conectan los nodos con no. impar de aristas" << endl;
-    for (Edge edge : matching) {
-        cout << edge.u << ", " << edge.v << endl;
-    }
+    vector<Edge> matching = minimumWeightPerfectMatching(n, minWeightEdges, mstEdgesSet);
 
     // Agregar las aristas matching (matching) a las aristas de la matriz de adyacencia de MST (edges)
-    for (const Edge& edge : matching) {
+    for (Edge edge : matching) {
         mstEdges.push_back(edge);
     }
 
