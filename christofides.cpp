@@ -35,7 +35,7 @@ vector<Edge> minimumWeightPerfectMatching(int n, vector<Edge>& edges) {
 // **SOLAMENTE FUNCIONA PARA UN GRAFO COMPLETO**
 // aproximación de solución para el problema TSP, tiene como entrada una matriz de adyacencia del MST de un grafo completo
 // y el grafo original completo
-void christofidesTSP(vector<vector<int>>& mstGraph, vector<vector<int>>& originalGraph) {
+void christofidesTSP(vector<vector<int>>& mstGraph, vector<vector<int>>& originalGraph, vector<Edge>& edges) {
 
     // vector de nodos con número impar de aristas
     vector<int> oddNumberEdgesNodes;
@@ -58,7 +58,7 @@ void christofidesTSP(vector<vector<int>>& mstGraph, vector<vector<int>>& origina
         }
     }
 
-    // crear un vector de las aristas del grafo original solament con los nodos que tienen un numero impar
+    // crear un vector de las aristas del grafo original solamente con los nodos que tienen un numero impar
     // de aristas en el MST
     vector<Edge> minWeightEdges;
 
@@ -68,7 +68,7 @@ void christofidesTSP(vector<vector<int>>& mstGraph, vector<vector<int>>& origina
             int u = oddNumberEdgesNodes[i];
             int v = oddNumberEdgesNodes[j];
 
-            // si existe una arista se agrega un numero de 
+            // si existe una arista se agrega a minWeightEdges
             if (originalGraph[u][v] > 0) {
                 minWeightEdges.push_back({u, v, originalGraph[u][v]});
             }
@@ -81,6 +81,11 @@ void christofidesTSP(vector<vector<int>>& mstGraph, vector<vector<int>>& origina
     cout << "Aristas que conectan los nodos con no. impar de aristas" << endl;
     for (Edge edge : matching) {
         cout << edge.u << ", " << edge.v << endl;
+    }
+
+    // Agregar las aristas matching (minWeightEdges) a las aristas de la matriz de adyacencia de MST (edges)
+    for (const Edge& edge : minWeightEdges) {
+        edges.push_back(edge);
     }
 
     // falta agregar las aristas matching a la matriz de adyacencia de MST, encontrar el camino euleriano y quitar aristas que tengan nodos repetidos

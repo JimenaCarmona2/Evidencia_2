@@ -104,8 +104,8 @@ int main(int argc, char *argv[]) {
 
 
     // 2. TSP
-    christofidesTSP(mstGraph, AdjMatrixDistance);
-
+    christofidesTSP(mstGraph, AdjMatrixDistance, edges);
+    
 
     // 3. Ford-Fullkerson
     int max_flow = ford_fullkerson(AdjMatrixCapacity, 0, n - 1);

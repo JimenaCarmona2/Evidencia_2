@@ -4,6 +4,6 @@
 #include <vector>
 using namespace std;
 
-void christofidesTSP(vector<vector<int>>& mstGraph, vector<vector<int>>& originalGraph);
+void christofidesTSP(vector<vector<int>>& mstGraph, vector<vector<int>>& originalGraph, vector<Edge>& edges);
 
 #endif

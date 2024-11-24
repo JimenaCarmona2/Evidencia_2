@@ -6,6 +6,11 @@ using namespace std;
 
 struct Edge {
     int u, v, weight;
+
+    friend ostream& operator<<(ostream& os, const Edge& edge) {
+        os << "Edge(" << edge.u << ", " << edge.v << ", " << edge.weight << ")";
+        return os;
+    }
 };
 
 
