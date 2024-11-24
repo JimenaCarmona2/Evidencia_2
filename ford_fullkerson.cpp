@@ -73,8 +73,3 @@ int ford_fullkerson(vector<vector<int>>& adjacencyMatrix, int s, int t) {
 
     return max_flow;
 }
-
-/*
-Bibliografía: 
-https://www.geeksforgeeks.org/ford-fulkerson-algorithm-for-maximum-flow-problem/
-*/

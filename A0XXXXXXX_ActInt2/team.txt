@@ -1,0 +1,5 @@
+Jimena García Carmona A00835729
+Lectura del archivo de entrada, implementación del algoritmo de Kruskal y creación del multigrafo y su implementación en el ciclo Euleriano (con algoritmo de Hierholzer) y Hamiltoniano en el algoritmo de Christofides para TSP.
+
+Fidel Morales Briones A01198630
+Implementación de Ford-Fullkerson, dentro de Christofides encontrar las nodos con aristas impares y encontrar sus aristas minimum weight perfect matching, función main, investigar solución aproximada para TSP.
