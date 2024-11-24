@@ -51,7 +51,7 @@ void christofidesTSP(vector<vector<int>>& mstGraph, vector<vector<int>>& origina
                 nodeCount++;
             }
         }
-        cout << "odd number node" << endl;
+
         if (nodeCount % 2 != 0) {
             oddNumberEdgesNodes.push_back(u);
             cout << u << endl;
@@ -78,6 +78,7 @@ void christofidesTSP(vector<vector<int>>& mstGraph, vector<vector<int>>& origina
     // algoritmo de blossom para encontrar las aristas de minimo costo que conectan a los nodos restantes
     vector<Edge> matching = minimumWeightPerfectMatching(n, minWeightEdges);
 
+    cout << "Aristas que conectan los nodos con no. impar de aristas" << endl;
     for (Edge edge : matching) {
         cout << edge.u << ", " << edge.v << endl;
     }
