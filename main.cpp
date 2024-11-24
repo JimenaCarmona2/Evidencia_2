@@ -102,10 +102,8 @@ int main(int argc, char *argv[]) {
         cout << "(" << arc.u << ", " << arc.v << ")" << endl;
     }
 
-
     // 2. TSP
-    christofidesTSP(mstGraph, AdjMatrixDistance, edges);
-    
+    christofidesTSP(mstGraph, AdjMatrixDistance);
 
     // 3. Ford-Fullkerson
     int max_flow = ford_fullkerson(AdjMatrixCapacity, 0, n - 1);

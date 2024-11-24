@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <stack>
 #include "kruskal.h"
 
 using namespace std;
@@ -32,15 +33,47 @@ vector<Edge> minimumWeightPerfectMatching(int n, vector<Edge>& edges) {
     return matching;
 }
 
+vector<vector<int>> eulerianCycle(vector<vector<int>>& MSTGraph, int start) {
+    stack<int> path;
+    vector<int> finalPath;
+
+    // Iniciamos el recorrido con el primer nodo 
+    path.push(start);
+
+    // Si hay nodos en el camino actual (path)
+    while (!path.empty()) {
+        int u = path.top(); // Se agregan a la pila y continúa
+
+        // Si el nodo tiene aristas que no se han visitado
+        if (!MSTGraph[u].empty()) {
+            int v = MSTGraph[u].back(); // Último nodo adyacente
+            path.push(v);
+            MSTGraph[u].pop_back(); // Se elimina la arista u -> v
+
+            // Eliminar v -> u
+        }
+    }
+}
+
 // **SOLAMENTE FUNCIONA PARA UN GRAFO COMPLETO**
 // aproximación de solución para el problema TSP, tiene como entrada una matriz de adyacencia del MST de un grafo completo
 // y el grafo original completo
-void christofidesTSP(vector<vector<int>>& mstGraph, vector<vector<int>>& originalGraph, vector<Edge>& edges) {
+void christofidesTSP(vector<vector<int>>& mstGraph, vector<vector<int>>& originalGraph) {
 
     // vector de nodos con número impar de aristas
     vector<int> oddNumberEdgesNodes;
 
     int n = mstGraph.size();
+
+    // Aristas de mstGraph
+    vector<Edge> mstEdges;
+    for (int u = 0; u < n; u++) {
+        for (int v = u; v < n; v++) {
+            if (mstGraph[u][v] > 0) {
+                mstEdges.push_back({u, v, mstGraph[u][v]});
+            }
+        }
+    }
 
     // encontrar los nodos que tienen un número de aristas impar en la matriz de adyacencia del MST
     for (int u = 0; u < n; u++) {
@@ -83,10 +116,10 @@ void christofidesTSP(vector<vector<int>>& mstGraph, vector<vector<int>>& origina
         cout << edge.u << ", " << edge.v << endl;
     }
 
-    // Agregar las aristas matching (minWeightEdges) a las aristas de la matriz de adyacencia de MST (edges)
-    for (const Edge& edge : minWeightEdges) {
-        edges.push_back(edge);
+    // Agregar las aristas matching (matching) a las aristas de la matriz de adyacencia de MST (edges)
+    for (const Edge& edge : matching) {
+        mstEdges.push_back(edge);
     }
 
-    // falta agregar las aristas matching a la matriz de adyacencia de MST, encontrar el camino euleriano y quitar aristas que tengan nodos repetidos
+    // falta  encontrar el camino euleriano y quitar aristas que tengan nodos repetidos
 }
