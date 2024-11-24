@@ -38,7 +38,7 @@ bool compareWeight(Edge a, Edge b) {
     return a.weight < b.weight;
 }
 
-void kruskalMST(const vector<Edge>& edges, int V, vector<Edge>& arcs) {
+vector<vector<int>> kruskalMST(const vector<Edge>& edges, int V, vector<Edge>& arcs) {
     vector<Edge> res;  // Resultado MST
     int weightMST = 0;
 
@@ -66,26 +66,12 @@ void kruskalMST(const vector<Edge>& edges, int V, vector<Edge>& arcs) {
             mergeUnion(subsets, u, v);
 
             mstMatrix[edge.u][edge.v] = edge.weight;
+            mstMatrix[edge.v][edge.u] = edge.weight;
 
             arcs.push_back(edge);
         }
     }
 
-    cout << "\nMatriz de adyacencia del MST:\n";
-    ofstream outfile("MST.txt");
-    if (outfile.is_open()) {
-        for (const auto& row : mstMatrix) {
-            for (int weight : row) {
-                cout << weight << " ";
-                outfile << weight << " ";
-            }
-            cout << endl;
-            outfile << endl;
-        }
-        outfile.close();
-    } else {
-        cerr << "Error" << endl;
-    }
-
     delete[] subsets;
+    return mstMatrix;
 }
