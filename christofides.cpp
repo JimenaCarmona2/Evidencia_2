@@ -33,26 +33,75 @@ vector<Edge> minimumWeightPerfectMatching(int n, vector<Edge>& edges) {
     return matching;
 }
 
-vector<vector<int>> eulerianCycle(vector<vector<int>>& MSTGraph, int start) {
+vector<int> findEulerianCycle(vector<Edge>& mstEdges, int start) {
+    // Lista de adyacencia de mstEdges
+    vector<vector<pair<int, bool>>> adjList(mstEdges.size()); // Bool para indicar visita
+
+    // Añadir aristas para grafos no dirigidos
+    for (const auto& edge : mstEdges) {
+        adjList[edge.u].emplace_back(edge.v, false);
+        adjList[edge.v].emplace_back(edge.u, false);
+    }
+
     stack<int> path;
     vector<int> finalPath;
 
     // Iniciamos el recorrido con el primer nodo 
     path.push(start);
+    int currNode = start;
 
     // Si hay nodos en el camino actual (path)
     while (!path.empty()) {
-        int u = path.top(); // Se agregan a la pila y continúa
+        bool hasUnusedEdge = false;
+        // Buscar una arista no usada desde el nodo actual
+        for (auto& neighbor : adjList[currNode]) {
+            // Marcar las aristas como usadas
+            if (!neighbor.second) {
+                neighbor.second = true;
 
-        // Si el nodo tiene aristas que no se han visitado
-        if (!MSTGraph[u].empty()) {
-            int v = MSTGraph[u].back(); // Último nodo adyacente
-            path.push(v);
-            MSTGraph[u].pop_back(); // Se elimina la arista u -> v
+                // Marcar la arista de vuelta (simetría)
+                for (auto& backEdge : adjList[neighbor.first]) {
+                    if (backEdge.first == currNode && !backEdge.second) {
+                        backEdge.second = true;
+                        break;
+                    }
+                }
 
-            // Eliminar v -> u
+                path.push(currNode); // Guardar el nodo actual en la ruta
+                currNode = neighbor.first; // Moverse al siguiente nodo
+                hasUnusedEdge = true;
+                break;
+            }
+        }
+
+        if (!hasUnusedEdge) {
+            // Si no hay más vecinos, añadimos el nodo actual al ciclo y volvemos en la pila
+            finalPath.push_back(currNode);
+            currNode = path.top();
+            path.pop();
         }
     }
+
+    return finalPath;
+}
+
+// Convierte el ciclo Euleriano en un ciclo Hamiltoniano
+vector<int> deleteRepeatedNodes(const vector<int>& eulerianCycle) {
+    vector<int> finalPath;
+    vector<bool> visited(eulerianCycle.size(), false); // Nodos visitados en falso por default
+
+    for(int node : eulerianCycle) {
+        // Si no se ha visitado se agrega el camino
+        if (!visited[node]) {
+            finalPath.push_back(node);
+            visited[node] = true;
+        }
+    }
+
+    // Regresa al nodo inicial para completarlo
+    finalPath.push_back(finalPath[0]);
+
+    return finalPath;
 }
 
 // **SOLAMENTE FUNCIONA PARA UN GRAFO COMPLETO**
@@ -121,5 +170,22 @@ void christofidesTSP(vector<vector<int>>& mstGraph, vector<vector<int>>& origina
         mstEdges.push_back(edge);
     }
 
-    // falta  encontrar el camino euleriano y quitar aristas que tengan nodos repetidos
+    // Encontrar el ciclo Euleriano
+    vector<int> eulerianCycle = findEulerianCycle(mstEdges, 0);
+
+    // Eliminar aristas con nodos repetidos (ciclo Hamiltoniano)
+    vector<int> finalPath = deleteRepeatedNodes(eulerianCycle);
+
+    cout << "Ciclo Euleriano: ";
+    for (int vertex : eulerianCycle) {
+        cout << vertex << " ";
+    }
+    cout << endl;
+
+    cout << "Ciclo Hamiltoniano: ";
+    for (int vertex : finalPath) {
+        cout << vertex << " ";
+    }
+    cout << endl;
+
 }
